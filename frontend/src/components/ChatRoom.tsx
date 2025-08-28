@@ -11,12 +11,13 @@ interface ChatRoomProps {
   username: string;
   room: string;
   onJoinRoom: (room: string) => void;
+  onLeaveRoom: () => void;
   onLogout: () => void;
   socket: Socket;
   users: User[];
 }
 
-function ChatRoom({ username, room, onJoinRoom, onLogout, socket, users }: ChatRoomProps) {
+function ChatRoom({ username, room, onJoinRoom, onLeaveRoom, onLogout, socket, users }: ChatRoomProps) {
   const [messages, setMessages] = useState<Array<{ username: string; message: string }>>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [typingUsers, setTypingUsers] = useState<Set<string>>(new Set());
@@ -153,7 +154,25 @@ function ChatRoom({ username, room, onJoinRoom, onLogout, socket, users }: ChatR
       <main className="flex-1 flex flex-col">
         <header className="h-14 bg-white border-b border-gray-200 px-4 flex items-center justify-between">
           <div className="font-semibold">{room ? `# ${room}` : 'Choose or create a room'}</div>
-          <div className="text-sm text-gray-500">Signed in as <span className="font-medium text-gray-700">{username}</span></div>
+          <div className="flex items-center gap-2">
+            <div className="text-sm text-gray-500">Signed in as <span className="font-medium text-gray-700">{username}</span></div>
+            {room && (
+              <button
+                onClick={() => {
+                  handleStopTyping();
+                  onLeaveRoom();
+                  setMessages([]);
+                }}
+                className="text-sm px-3 py-1.5 rounded-md border border-red-200 text-red-700 bg-red-50 hover:bg-red-100 active:bg-red-200/30 focus:outline-none focus:ring-2 focus:ring-red-300 transition-shadow"
+                title="Leave room"
+              >
+                <span className="inline-flex items-center">
+                  <LogOut size={14} className="mr-1.5" />
+                  Leave
+                </span>
+              </button>
+            )}
+          </div>
         </header>
         <div className={`flex-1 overflow-y-auto p-4 space-y-3${typingUsers.size > 0 ? ' pb-12' : ''}`}>
           {messages.map((msg, index) => {

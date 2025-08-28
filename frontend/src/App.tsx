@@ -36,6 +36,13 @@ function App() {
     socket.emit('joinRoom', roomName);
   };
 
+  const handleLeaveRoom = () => {
+    if (room) {
+      socket.emit('leaveRoom', room);
+      setRoom('');
+    }
+  };
+
   const handleLogout = () => {
     socket.emit('logout', username);
     setUsername('');
@@ -52,6 +59,7 @@ function App() {
             username={username}
             room={room}
             onJoinRoom={handleJoinRoom}
+            onLeaveRoom={handleLeaveRoom}
             onLogout={handleLogout}
             socket={socket}
             users={users}
