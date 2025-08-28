@@ -3,7 +3,8 @@ import io from 'socket.io-client';
 import LoginForm from './components/LoginForm';
 import ChatRoom from './components/ChatRoom';
 
-const socket = io('http://localhost:5000');
+const SOCKET_SERVER_URL = (process.env.SOCKET_SERVER_URL as string) || 'http://localhost:5000';
+const socket = io(SOCKET_SERVER_URL);
 
 interface User {
   username: string;
@@ -43,7 +44,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="max-w-4xl w-full bg-white shadow-md rounded-lg overflow-hidden">
+      <div className="bg-gradient-to-r from-blue-100 to-indigo-200 border border-blue-200 max-w-4xl w-full bg-white shadow-md rounded-lg overflow-hidden">
         {!username ? (
           <LoginForm onLogin={handleLogin} />
         ) : (

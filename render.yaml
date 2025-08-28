@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: real-time-chat-backend
+    env: node
+    rootDirectory: backend
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: CORS_ORIGIN
+        sync: false
+
+
